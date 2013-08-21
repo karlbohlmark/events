@@ -1,0 +1,54 @@
+<meta charset="utf-8">
+<style>
+	li {
+		width: 300px;
+		height: 100px;
+		outline: 1px solid black;
+		list-style-type: none;
+	}
+
+	.log {
+		position: fixed;
+		width: 200px;
+		top: 0;
+	}
+
+	.log h2{
+		font-size: 16;
+		margin: 0;
+	}
+
+</style>
+<body>
+
+	<ul id="list"></ul>
+	<script src="../build/build.js"></script>
+	<script>
+		var list = document.querySelector('#list')
+
+		for (var i = 0; i<2; i++) {
+			var l = document.createElement('li')
+			list.appendChild(l)
+		}
+
+		var events = require('events')
+		
+		var listClick = events(list, 'click')
+		listClick.on(function (name, e) {
+			console.log('list click', e.target, e.currentTarget)
+		})
+
+		var items = [].slice.call(list.children)
+		var itemClick = events(items, 'click')
+		itemClick.on(function (name, e) {
+			console.log('items click', e.target, e.currentTarget)
+		})
+
+		var delegatedClick = events([list, 'li'], 'click')
+		delegatedClick.on(function (name, e) {
+			console.log('delegated click', e.target, e.currentTarget)
+		})
+
+		list.appendChild(document.createElement('li'))
+	</script>
+</body>

@@ -1,0 +1,62 @@
+<meta charset="utf-8">
+<style>
+	div {
+		width: 300px;
+		height: 100px;
+	}
+
+	.log {
+		position: fixed;
+		width: 200px;
+		top: 0;
+	}
+
+	.log h2{
+		font-size: 16;
+		margin: 0;
+	}
+
+</style>
+<body>
+
+	<script src="../build/build.js"></script>
+	<script>
+
+		['red', 'green', 'blue'].forEach(function (color) {
+			var d = document.createElement('div')	
+			d.style.backgroundColor = color
+			d.className = color
+			document.body.appendChild(d)
+		})
+
+
+		var createLog = function () {
+			var i = 0
+			return function (name) {
+				var d = document.createElement('div')
+				d.className = 'log'
+				d.innerHTML = "<h2>" + name + "</h2>"
+				document.body.appendChild(d)
+				d.style.right = (i * 200) + 'px'
+				i++;
+				return function log(eventName, eventObject) {
+					d.innerHTML = d.innerHTML + '<br>' + eventName
+				}
+			}
+		}()
+		
+		var events = require('events')
+		var red = document.querySelector('.red')
+		var blue = document.querySelector('.blue')
+		var redClick = events(red, 'click')
+		var blueHover = events(blue, 'mouseenter', 'mouseleave')
+
+		var redClickBlueHover = redClick.union(blueHover)
+		redClickBlueHover.on(createLog('click red or hover blue'))
+
+		blueHover.on(createLog('hover blue'))
+
+		redClick.on(createLog('click red'))
+
+	</script>
+</body>
