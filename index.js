@@ -53,7 +53,9 @@ Events.prototype.matchesTarget = function (e) {
 	var target
 	for (var i=0; i<possibleTargets.length; i++) {
 		target = possibleTargets[i]
-		if (target == e.target) return true
+		if (target == e.target || target.contains(e.target)) {
+			return true
+		}
 	}
 	return false;
 }
